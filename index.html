@@ -1,17 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloomQuix Academy</title>
     <style>
-        /* ── reset & base ── */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         :root {
             --accent: #0052FF;
             --basic-color: #10B981;
@@ -23,15 +16,14 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
             height: 100vh;
             overflow: hidden;
-            background: #fff;
         }
 
-        /* ── sidebar ── */
+        /* Sidebar */
         nav {
             width: 300px;
             background: var(--bg-sidebar);
@@ -42,18 +34,16 @@
             flex-shrink: 0;
             overflow-y: auto;
         }
-
         .logo-container {
-            text-align: left;
+            text-align: center;
             margin-bottom: 30px;
         }
-
         .sidebar-logo {
-            width: 130px;
+            width: 80px;
             display: block;
+            margin: 0 auto;
             object-fit: contain;
         }
-
         .academy-text {
             font-size: 14px;
             font-weight: 700;
@@ -69,9 +59,7 @@
             text-transform: uppercase;
             color: var(--text-gray);
             margin: 15px 0 8px 10px;
-            letter-spacing: 0.5px;
         }
-
         .nav-item {
             padding: 12px 15px;
             border-radius: 8px;
@@ -84,26 +72,32 @@
             width: 100%;
             font-size: 14px;
             margin-bottom: 4px;
-            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
         .nav-item:hover {
             background: #F1F5F9;
         }
-
         .nav-item.active {
             background: var(--accent);
             color: white;
         }
+        .nav-item .lock-icon {
+            font-size: 14px;
+            margin-left: auto;
+            opacity: 0.5;
+        }
+        .nav-item.active .lock-icon {
+            color: rgba(255, 255, 255, 0.7);
+        }
 
-        /* upgrade cards */
         .upgrade-card {
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 10px;
             text-align: center;
         }
-
         .btn-upgrade {
             width: 100%;
             padding: 12px;
@@ -114,43 +108,31 @@
             font-size: 12px;
             text-transform: uppercase;
             color: white;
-            transition: opacity 0.2s;
         }
-
         .btn-upgrade:hover {
             opacity: 0.85;
         }
-
         .basic-zone {
             background: #ECFDF5;
             border: 1px solid #A7F3D0;
         }
-
         .pro-zone {
             background: #FFFBEB;
             border: 1px solid #FDE68A;
         }
 
-        /* ── main content ── */
+        /* Main Content Area */
         main {
             flex-grow: 1;
             padding: 40px 6%;
             overflow-y: auto;
         }
-
         .section {
             display: none;
             max-width: 900px;
         }
-
         .section.active {
             display: block;
-        }
-
-        .section h1 {
-            font-size: 28px;
-            margin-bottom: 24px;
-            color: var(--text-dark);
         }
 
         .lesson-card {
@@ -160,40 +142,67 @@
             padding: 25px;
             margin-bottom: 20px;
             cursor: pointer;
-            transition: 0.25s ease;
+            transition: 0.3s;
         }
-
         .lesson-card:hover {
             border-color: var(--accent);
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
 
-        .lesson-card h3 {
-            margin-bottom: 6px;
-            color: var(--text-dark);
+        .locked-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .locked-card::after {
+            content: "🔒";
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 24px;
+            opacity: 0.5;
+        }
+        .locked-card:hover::after {
+            opacity: 1;
         }
 
-        .lesson-card p {
-            color: var(--text-gray);
-            font-size: 15px;
+        .basic-badge {
+            display: inline-block;
+            background: var(--basic-color);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .pro-badge {
+            display: inline-block;
+            background: var(--pro-color);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
-        /* ── modal ── */
+        /* Modal System */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-
         .modal-content {
             background: white;
             width: 90%;
@@ -203,9 +212,7 @@
             padding: 45px;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
         }
-
         .close-btn {
             position: sticky;
             top: 0;
@@ -213,25 +220,15 @@
             cursor: pointer;
             font-size: 28px;
             line-height: 1;
-            color: var(--text-gray);
-            transition: color 0.2s;
-            background: transparent;
+            background: none;
             border: none;
             padding: 0 4px;
+            color: var(--text-gray);
         }
-
         .close-btn:hover {
             color: var(--text-dark);
         }
 
-        .modal-logo {
-            width: 130px;
-            margin: 0 auto 8px;
-            display: block;
-            object-fit: contain;
-        }
-
-        /* modal content helpers */
         .highlight {
             background: #F0F7FF;
             padding: 20px;
@@ -239,21 +236,18 @@
             margin: 15px 0;
             border-left: 4px solid var(--accent);
             line-height: 1.7;
-            color: var(--text-dark);
         }
-
         .hash-box {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: monospace;
             background: #0F172A;
             color: #10B981;
-            padding: 12px 16px;
+            padding: 12px;
             border-radius: 8px;
             font-size: 13px;
             word-break: break-all;
             margin: 10px 0;
-            display: inline-block;
+            display: block;
         }
-
         .step-item {
             background: #F8FAFC;
             padding: 18px;
@@ -262,6 +256,12 @@
             border-left: 4px solid var(--accent);
         }
 
+        .modal-logo {
+            width: 110px;
+            margin: 0 auto;
+            display: block;
+            object-fit: contain;
+        }
         .btn-invest {
             background: var(--accent);
             color: white;
@@ -274,344 +274,2576 @@
             width: 100%;
             margin-top: 20px;
             text-transform: uppercase;
-            transition: background 0.2s;
         }
-
         .btn-invest:hover {
             background: #003fd1;
         }
 
-        /* ── scrollbar tweaks ── */
-        .modal-content::-webkit-scrollbar,
-        main::-webkit-scrollbar,
-        nav::-webkit-scrollbar {
-            width: 5px;
+        /* PLAY MODE - FLASHCARDS */
+        .play-container {
+            display: none;
+        }
+        .play-container.active {
+            display: block;
         }
 
-        .modal-content::-webkit-scrollbar-thumb,
-        main::-webkit-scrollbar-thumb,
-        nav::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
+        .flashcard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.6s;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .flashcard:hover {
+            transform: scale(1.02);
+        }
+        .flashcard-number {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .flashcard h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .flashcard p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .flashcard .answer {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .flashcard.flipped .answer {
+            display: block;
+        }
+        .flashcard.flipped .question {
+            display: none;
+        }
+
+        .tap-hint {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .play-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .play-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .play-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .progress-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            height: 8px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--basic-color);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* QUIZ STYLES */
+        .quiz-container {
+            display: none;
+            margin-top: 30px;
+        }
+        .quiz-container.active {
+            display: block;
+        }
+
+        .quiz-question {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .quiz-options {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .quiz-option {
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: #F0F7FF;
+        }
+        .quiz-option.correct {
+            border-color: #10B981;
+            background: #ECFDF5;
+        }
+        .quiz-option.wrong {
+            border-color: #EF4444;
+            background: #FEF2F2;
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        .quiz-result.active {
+            display: block;
+        }
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--basic-color), #059669);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .start-quiz-btn {
+            background: var(--basic-color);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .back-to-menu {
+            background: none;
+            border: 2px solid var(--text-gray);
+            color: var(--text-gray);
+            padding: 12px 25px;
             border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .back-to-menu:hover {
+            background: var(--text-gray);
+            color: white;
         }
 
-        .modal-content::-webkit-scrollbar-track,
-        main::-webkit-scrollbar-track,
-        nav::-webkit-scrollbar-track {
-            background: transparent;
+        /* ALTCOINS INTERACTIVE STYLES */
+        .altcoin-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .altcoin-tab {
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .altcoin-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .altcoin-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
 
-        /* ── responsive ── */
+        .altcoin-content {
+            display: none;
+        }
+        .altcoin-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .crypto-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .crypto-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .crypto-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            color: white;
+        }
+        .eth-icon {
+            background: linear-gradient(135deg, #627EEA, #8BACFF);
+        }
+        .usdt-icon {
+            background: linear-gradient(135deg, #26A17B, #50C878);
+        }
+        .sol-icon {
+            background: linear-gradient(135deg, #9945FF, #14F195);
+        }
+        .xrp-icon {
+            background: linear-gradient(135deg, #23292F, #4A5568);
+        }
+        .ada-icon {
+            background: linear-gradient(135deg, #0033AD, #0055FF);
+        }
+        .bnb-icon {
+            background: linear-gradient(135deg, #F3BA2F, #F0B90B);
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .pros {
+            background: #ECFDF5;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #10B981;
+        }
+        .cons {
+            background: #FEF2F2;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #EF4444;
+        }
+        .pros h4 {
+            color: #059669;
+            margin: 0 0 10px 0;
+        }
+        .cons h4 {
+            color: #DC2626;
+            margin: 0 0 10px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .comparison-table th {
+            background: var(--text-dark);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-table tr:hover {
+            background: #F8FAFC;
+        }
+
+        .mistake-box {
+            background: #FEF2F2;
+            border: 2px solid #FECACA;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .mistake-box h3 {
+            color: #DC2626;
+            margin: 0 0 15px 0;
+        }
+        .mistake-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .mistake-box li {
+            margin-bottom: 8px;
+            color: #991B1B;
+        }
+
+        .key-takeaway {
+            background: linear-gradient(135deg, #F0F7FF, #E0E7FF);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .key-takeaway h3 {
+            color: var(--accent);
+            margin: 0 0 15px 0;
+        }
+
+        .intro-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        .intro-highlight h2 {
+            margin: 0 0 15px 0;
+        }
+        .intro-highlight p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* TECHNICAL ANALYSIS STYLES */
+        .ta-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .ta-tab {
+            padding: 10px 18px;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        .ta-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .ta-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .ta-content {
+            display: none;
+        }
+        .ta-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .ta-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .candlestick-demo {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 30px;
+            padding: 30px;
+            background: #F8FAFC;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .candle {
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .candle-wick {
+            width: 2px;
+            background: var(--text-dark);
+        }
+        .candle-body {
+            width: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+        .bullish-body {
+            background: #10B981;
+        }
+        .bearish-body {
+            background: #EF4444;
+        }
+
+        .principle-box {
+            background: linear-gradient(135deg, #F0F7FF, #E0E7FF);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent);
+        }
+        .principle-box h4 {
+            margin: 0 0 10px 0;
+            color: var(--accent);
+        }
+
+        .level-indicator {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .level-beginner {
+            background: #ECFDF5;
+            color: #059669;
+        }
+        .level-intermediate {
+            background: #FFFBEB;
+            color: #D97706;
+        }
+        .level-advanced {
+            background: #FEF2F2;
+            color: #DC2626;
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s;
+        }
+        .resource-link:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        .resource-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .warning-box {
+            background: #FFFBEB;
+            border: 2px solid #FDE68A;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .warning-box h4 {
+            color: #D97706;
+            margin: 0 0 10px 0;
+        }
+
+        .indicator-visual {
+            background: #0F172A;
+            border-radius: 12px;
+            padding: 25px;
+            color: white;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        /* INDICATOR MASTERY STYLES */
+        .im-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .im-tab {
+            padding: 10px 16px;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .im-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .im-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .im-content {
+            display: none;
+        }
+        .im-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .im-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .cat-trend {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        .cat-momentum {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        .cat-volume {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        .cat-volatility {
+            background: #FCE7F3;
+            color: #9D174D;
+        }
+
+        .scale-visual {
+            background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+            height: 30px;
+            border-radius: 15px;
+            position: relative;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .toolkit-card {
+            background: linear-gradient(135deg, #F0F7FF, #E0E7FF);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent);
+        }
+        .toolkit-card h4 {
+            margin: 0 0 15px 0;
+            color: var(--accent);
+        }
+        .toolkit-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .toolkit-card li {
+            margin-bottom: 8px;
+        }
+
+        .golden-rule {
+            background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 15px 0;
+            border-left: 4px solid #10B981;
+        }
+        .golden-rule h4 {
+            margin: 0 0 15px 0;
+            color: #059669;
+        }
+
+        .indicator-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .indicator-table th {
+            background: var(--accent);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .indicator-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        .indicator-table tr:hover {
+            background: #F8FAFC;
+        }
+
+        .formula-box {
+            background: #0F172A;
+            border-radius: 12px;
+            padding: 20px;
+            color: #10B981;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+
+        .setup-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .setup-box {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .setup-box h4 {
+            margin: 0 0 10px 0;
+        }
+        .setup-beginner {
+            border-color: #10B981;
+        }
+        .setup-intermediate {
+            border-color: #F59E0B;
+        }
+        .setup-advanced {
+            border-color: #EF4444;
+        }
+
+        /* FREE SECTION NEW STYLES */
+        .free-welcome {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .free-welcome h1 {
+            margin: 0 0 15px 0;
+            font-size: 32px;
+        }
+        .free-welcome p {
+            margin: 0;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .progress-tracker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            background: #F8FAFC;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+        .progress-step.completed {
+            background: var(--basic-color);
+            color: white;
+        }
+        .progress-step.active {
+            background: var(--accent);
+            color: white;
+        }
+        .progress-line {
+            flex-grow: 1;
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+        }
+        .progress-line.completed {
+            background: var(--basic-color);
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent), var(--basic-color));
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 30px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .timeline-dot.milestone {
+            border-color: var(--basic-color);
+            background: var(--basic-color);
+        }
+        .timeline-year {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        .timeline-content {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .timeline-content h4 {
+            margin: 0 0 8px 0;
+        }
+        .timeline-content p {
+            margin: 0;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        /* Comparison Slider */
+        .comparison-slider {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+        .comparison-side {
+            padding: 30px;
+            text-align: center;
+        }
+        .comparison-side.traditional {
+            background: #F1F5F9;
+        }
+        .comparison-side.defi {
+            background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+        }
+        .comparison-side h3 {
+            margin: 0 0 15px 0;
+        }
+        .comparison-side ul {
+            text-align: left;
+            padding-left: 20px;
+            margin: 0;
+        }
+        .comparison-side li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .vs-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--text-dark);
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        /* Glossary Styles */
+        .glossary-search {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .glossary-search:focus {
+            border-color: var(--accent);
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .glossary-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .glossary-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .glossary-term {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .glossary-def {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+        .glossary-letter {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 30px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        /* Myth Buster */
+        .myth-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .myth-card:hover {
+            border-color: #EF4444;
+        }
+        .myth-card.flipped {
+            border-color: #10B981;
+        }
+        .myth-question {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .myth-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #FEF2F2;
+            color: #EF4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .myth-card.flipped .myth-icon {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+        .myth-answer {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+        .myth-card.flipped .myth-answer {
+            display: block;
+        }
+        .myth-card.flipped .myth-question {
+            display: none;
+        }
+
+        /* Quick Start Steps */
+        .quick-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .quick-step {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .quick-step:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        .quick-step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 0 auto 15px;
+        }
+        .quick-step h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+        .quick-step p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        /* Locked overlay for BASIC sections */
+        .section-locked-overlay {
+            display: none;
+            text-align: center;
+            padding: 60px 30px;
+            background: #F8FAFC;
+            border-radius: 20px;
+            border: 2px dashed var(--border);
+        }
+        .section-locked-overlay.active {
+            display: block;
+        }
+        .section-locked-overlay .lock-big {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .section-locked-overlay h2 {
+            margin-bottom: 15px;
+        }
+        .section-locked-overlay p {
+            color: var(--text-gray);
+            margin-bottom: 25px;
+        }
+
         @media (max-width: 768px) {
+            .quick-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .setup-comparison {
+                grid-template-columns: 1fr;
+            }
+            .comparison-slider {
+                grid-template-columns: 1fr;
+            }
             body {
                 flex-direction: column;
                 height: auto;
                 overflow: auto;
             }
-
             nav {
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid var(--border);
                 padding: 20px;
-                flex-shrink: 0;
             }
-
             main {
                 padding: 30px 20px;
             }
-
             .modal-content {
                 padding: 30px 20px;
                 max-height: 90vh;
             }
-
-            .sidebar-logo {
-                width: 110px;
+            .pros-cons {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- ─── MODAL ─── -->
     <div id="mainModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content" id="modalContainer" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal()" aria-label="Close modal">×</button>
+            <button class="close-btn" onclick="closeModal()">×</button>
             <div id="modalBody"></div>
         </div>
     </div>
 
-    <!-- ─── SIDEBAR ─── -->
     <nav>
         <div class="logo-container">
-            <img
-            src="https://imgur.com/a/grH244M"
-            alt="BloomQuix Logo"
-            class="sidebar-logo"
-            />
-            <div class="academy-text">BloomQuix Academy</div>
+            <img src="https://imgur.com/a/grH244M" alt="BloomQuix Logo" class="sidebar-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="academy-text" style="display:block;">BloomQuix Academy</div>
         </div>
 
-        <div class="nav-label">Free Training</div>
-        <button class="nav-item active" onclick="showTab('free_edu')">Introduction to Assets</button>
+        <div class="nav-label">Gratis Training</div>
+        <button class="nav-item active" onclick="showTab('free_edu')">Inleiding tot Assets</button>
 
-        <div class="nav-label">BASIC Program</div>
-        <button class="nav-item" onclick="openInvest('BASIC')">Technical Analysis 🔒</button>
-        <button class="nav-item" onclick="openInvest('BASIC')">Indicators Mastery 🔒</button>
+        <div class="nav-label">BASIC Programma 🔒</div>
+        <button class="nav-item" onclick="openInvest('BASIC')">
+            Crypto Fundamenten
+            <span class="lock-icon">🔒</span>
+        </button>
+        <button class="nav-item" onclick="openInvest('BASIC')">
+            Technische Analyse
+            <span class="lock-icon">🔒</span>
+        </button>
+        <button class="nav-item" onclick="openInvest('BASIC')">
+            Indicatoren Mastery
+            <span class="lock-icon">🔒</span>
+        </button>
 
-        <div class="nav-label">PRO Program</div>
-        <button class="nav-item" onclick="openInvest('PRO')">Trading Strategies 🔒</button>
+        <div class="nav-label">PRO Programma</div>
+        <button class="nav-item" onclick="openInvest('PRO')">
+            Handelspraktijk
+            <span class="lock-icon">🔒</span>
+        </button>
+        <button class="nav-item" onclick="openInvest('PRO')">
+            Handelsstrategieën
+            <span class="lock-icon">🔒</span>
+        </button>
 
         <div style="margin-top: auto;">
             <div class="upgrade-card basic-zone">
-                <button class="btn-upgrade" style="background:var(--basic-color)" onclick="openInvest('BASIC')">Upgrade to BASIC</button>
+                <button class="btn-upgrade" style="background:var(--basic-color)" onclick="openInvest('BASIC')">Upgrade naar BASIC</button>
             </div>
             <div class="upgrade-card pro-zone">
-                <button class="btn-upgrade" style="background:var(--pro-color)" onclick="openInvest('PRO')">Upgrade to PRO</button>
+                <button class="btn-upgrade" style="background:var(--pro-color)" onclick="openInvest('PRO')">Upgrade naar PRO</button>
             </div>
         </div>
     </nav>
 
-    <!-- ─── MAIN ─── -->
     <main>
+        <!-- FREE SECTION -->
         <section id="free_edu" class="section active">
-            <h1>Foundation of Digital Assets</h1>
+            <div class="free-welcome">
+                <h1>Welkom bij BloomQuix Academy</h1>
+                <p>Jouw gratis startpunt in de wereld van digitale assets. Geen ervaring nodig — we leggen alles uit vanaf nul.</p>
+            </div>
+
+            <div class="progress-tracker">
+                <div class="progress-step completed">1</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step completed">2</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step completed">3</div>
+                <div class="progress-line"></div>
+                <div class="progress-step active">4</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">5</div>
+                <span style="margin-left: 10px; color: var(--text-gray); font-size: 14px;">Je bent hier: Stap 4 van 5</span>
+            </div>
+
+            <h2 style="margin-bottom: 20px;">Gratis Cursus: Inleiding tot Digitale Assets</h2>
+
+            <div class="lesson-card" onclick="openEdu('why_crypto')">
+                <h3>Waarom Crypto?</h3>
+                <p>De problemen die digitale assets oplossen: inflatie, banktoegang, snelheid en transparantie.</p>
+            </div>
 
             <div class="lesson-card" onclick="openEdu('btc')">
-                <h3>What is Bitcoin?</h3>
-                <p>The world's first digital currency, digital gold, and the power of decentralization.</p>
+                <h3>Wat is Bitcoin?</h3>
+                <p>De eerste digitale valuta ter wereld, digitaal goud en de kracht van decentralisatie.</p>
             </div>
 
             <div class="lesson-card" onclick="openEdu('blockchain')">
-                <h3>How does blockchain work?</h3>
-                <p>A step-by-step breakdown of the technology: from transaction to hashing.</p>
+                <h3>Hoe werkt blockchain?</h3>
+                <p>Een stapsgewijze analyse van de technologie: van transactie tot hashing.</p>
             </div>
 
             <div class="lesson-card" onclick="openEdu('smart')">
                 <h3>Smart Contract</h3>
-                <p>Digital agreements that operate without intermediaries, banks, or lawyers.</p>
+                <p>Digitale overeenkomsten die werken zonder tussenpersonen, banken of advocaten.</p>
+            </div>
+
+            <div class="lesson-card" onclick="openEdu('trad_vs_defi')">
+                <h3>Traditioneel Bankieren vs DeFi</h3>
+                <p>Een interactieve vergelijking van het oude systeem versus gedecentraliseerde financiën.</p>
+            </div>
+
+            <div class="lesson-card" onclick="openEdu('timeline')">
+                <h3>De Geschiedenis van Crypto</h3>
+                <p>Van de Bitcoin whitepaper in 2008 tot de DeFi revolutie van vandaag — een visuele tijdlijn.</p>
+            </div>
+
+            <div class="lesson-card" onclick="openEdu('quickstart')">
+                <h3>Hoe Begin Je? — 4 Stappen</h3>
+                <p>Wallet kiezen → Exchange vinden → Eerste aankoop → Veilig bewaren.</p>
+            </div>
+
+            <div class="lesson-card" onclick="openEdu('myths')">
+                <h3>Mythen & Misverstanden</h3>
+                <p>"Crypto is alleen voor criminelen", "Het is te laat om in te stappen", en andere fabels ontkracht.</p>
+            </div>
+
+            <div class="lesson-card" onclick="openEdu('security_basics')">
+                <h3>Veiligheid Basics</h3>
+                <p>De eerste regels van crypto veiligheid: private keys, scams herkennen, en waarom 2FA essentieel is.</p>
+            </div>
+
+            <div class="lesson-card" onclick="openEdu('glossary')">
+                <h3>Crypto Woordenlijst</h3>
+                <p>Alle belangrijke termen op een rij — van Airdrop tot Whale. Doorzoekbaar en eenvoudig.</p>
+            </div>
+        </section>
+
+        <!-- BASIC SECTION - LOCKED -->
+        <section id="basic_edu" class="section">
+            <div class="section-locked-overlay active">
+                <div class="lock-big">🔒</div>
+                <h2>BASIC Programma is Vergrendeld</h2>
+                <p>Upgrade naar BASIC om toegang te krijgen tot Crypto Fundamenten, inclusief flashcards, quizzen en altcoin-overzichten.</p>
+                <button class="btn-invest" style="max-width:300px; margin:0 auto;" onclick="openInvest('BASIC')">Upgrade naar BASIC</button>
+            </div>
+            <!-- Hidden content kept for reference -->
+            <div id="basicMenu" class="menu-container" style="display:none;">
+                <div class="lesson-card" onclick="startPlayMode()">
+                    <span class="basic-badge">BASIC</span>
+                    <h3>Play Mode - Leer met Flashcards</h3>
+                    <p>20 essentiële crypto-concepten in interactieve kaarten. Tik om te onthullen!</p>
+                </div>
+                <div class="lesson-card" onclick="startQuiz()">
+                    <span class="basic-badge">BASIC</span>
+                    <h3>Quiz - Test Je Kennis</h3>
+                    <p>10 vragen om te controleren of je de fundamenten begrijpt.</p>
+                </div>
+                <div class="lesson-card" onclick="openAltcoins()">
+                    <span class="basic-badge">BASIC</span>
+                    <h3>Altcoins Overview</h3>
+                    <p>Ethereum, stablecoins, en andere belangrijke cryptocurrencies — wat maakt ze uniek?</p>
+                </div>
+            </div>
+            <div id="playMode" class="play-container">
+                <div style="margin-bottom:20px;">
+                    <button class="back-to-menu" onclick="backToMenu()">← Terug naar Menu</button>
+                </div>
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-number" id="cardNumber">1 / 20</div>
+                    <div class="question" id="cardQuestion">
+                        <h2>Wat is Cryptocurrency?</h2>
+                        <p>Een digitale vorm van geld die alleen elektronisch bestaat.</p>
+                    </div>
+                    <div class="answer" id="cardAnswer">
+                        <h2>Uitleg</h2>
+                        <p>Cryptocurrency is gedecentraliseerd, grensoverschrijdend, veilig en transparant. Voorbeelden: Bitcoin, Ethereum, Solana, XRP, Cardano.</p>
+                    </div>
+                    <div class="tap-hint">Tik om te onthullen</div>
+                </div>
+                <div class="play-controls">
+                    <button class="play-btn" id="prevBtn" onclick="prevCard()" disabled>← Vorige</button>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width:5%"></div>
+                    </div>
+                    <button class="play-btn" id="nextBtn" onclick="nextCard()">Volgende →</button>
+                </div>
+            </div>
+            <div id="quizMode" class="quiz-container">
+                <div style="margin-bottom:20px;">
+                    <button class="back-to-menu" onclick="backToMenu()">← Terug naar Menu</button>
+                </div>
+                <div id="quizQuestions"></div>
+                <div class="quiz-result" id="quizResult">
+                    <div class="score-circle" id="scoreCircle">0/10</div>
+                    <h2>Quiz Voltooid!</h2>
+                    <p id="scoreMessage">Goed gedaan!</p>
+                    <button class="start-quiz-btn" onclick="startQuiz()">Opnieuw Proberen</button>
+                    <button class="back-to-menu" onclick="backToMenu()">Terug naar Menu</button>
+                </div>
+            </div>
+            <div id="altcoinsMode" class="play-container">
+                <div style="margin-bottom:20px;">
+                    <button class="back-to-menu" onclick="backToMenu()">← Terug naar Menu</button>
+                </div>
+                <div class="intro-highlight">
+                    <h2>Altcoins Overview</h2>
+                    <p>Ethereum, Stablecoins, and Other Major Cryptocurrencies. Klik op een cryptocurrency hieronder om te leren.</p>
+                </div>
+                <div class="altcoin-nav">
+                    <div class="altcoin-tab active" onclick="showAltcoin('intro')">Introductie</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('eth')">Ethereum</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('stable')">Stablecoins</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('sol')">Solana</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('xrp')">XRP</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('ada')">Cardano</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('bnb')">BNB</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('compare')">Vergelijking</div>
+                    <div class="altcoin-tab" onclick="showAltcoin('mistakes')">Fouten</div>
+                </div>
+                <div id="altcoin-intro" class="altcoin-content active">
+                    <div class="crypto-card">
+                        <h2>Wat zijn Altcoins?</h2>
+                        <p><strong>"Altcoin" = "Alternative Coin"</strong> — elke cryptocurrency andere dan Bitcoin.</p>
+                        <p>Er zijn meer dan <strong>10.000 cryptocurrencies</strong>, maar slechts een klein percentage heeft significante real-world adoptie.</p>
+                        <div class="highlight" style="margin-top:20px;">
+                            <h3>Waarom werden Altcoins gecreëerd?</h3>
+                            <p>Om Bitcoin te verbeteren of andere problemen op te lossen:</p>
+                            <ul style="margin-top:10px;">
+                                <li>Smart contracts</li>
+                                <li>Snellere transacties</li>
+                                <li>Lagere fees</li>
+                                <li>Decentralized applications (dApps)</li>
+                                <li>DeFi, Gaming, NFTs</li>
+                                <li>Cross-border payments</li>
+                            </ul>
+                        </div>
+                        <p style="margin-top:20px; color:var(--text-gray);"><em>Elke cryptocurrency heeft zijn eigen doel. Klik op de tabs hierboven om ze te verkennen.</em></p>
+                    </div>
+                </div>
+                <div id="altcoin-eth" class="altcoin-content">
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon eth-icon">ETH</div>
+                            <div>
+                                <h2 style="margin:0;">Ethereum (ETH)</h2>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">De gedecentraliseerde computer van de wereld</p>
+                            </div>
+                        </div>
+                        <p>Ethereum is de <strong>tweede grootste cryptocurrency</strong> en veel meer dan alleen een cryptocurrency — het is een platform waar developers applicaties kunnen bouwen zonder centrale autoriteit.</p>
+                        <div class="highlight">
+                            <h3>Smart Contracts</h3>
+                            <p>Zelf-uitvoerende programma's op de blockchain. Voorbeeld: <em>"Als betaling ontvangen → eigendom overdragen."</em> Geen bank of advocaat nodig.</p>
+                        </div>
+                        <h3>Ethereum Powert:</h3>
+                        <ul>
+                            <li>Decentralized Finance (DeFi)</li>
+                            <li>NFT marketplaces</li>
+                            <li>Blockchain games</li>
+                            <li>Lending platforms</li>
+                            <li>Decentralized exchanges</li>
+                            <li>Duizenden dApps</li>
+                        </ul>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Voordelen</h4>
+                                <ul>
+                                    <li>Huge developer community</li>
+                                    <li>Meest gebruikt voor smart contracts</li>
+                                    <li>Constante technologische verbeteringen</li>
+                                    <li>Groot ecosysteem</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4>Uitdagingen</h4>
+                                <ul>
+                                    <li>Gas Fees kunnen duur zijn</li>
+                                    <li>Transacties soms langzamer</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="altcoin-stable" class="altcoin-content">
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon usdt-icon">$</div>
+                            <div>
+                                <h2 style="margin:0;">Stablecoins</h2>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Stabiliteit in een volatiele markt</p>
+                            </div>
+                        </div>
+                        <p>De grootste uitdaging in crypto is <strong>prijsvolatiliteit</strong>. Bitcoin kan enkele procenten per dag stijgen of dalen.</p>
+                        <div class="highlight">
+                            <p>Stablecoins zijn ontworpen om een <strong>stabiele waarde</strong> te behouden, meestal gekoppeld aan de US dollar:</p>
+                            <p style="font-size:20px; margin-top:10px;"><strong>1 USDT ≈ 1 USD | 1 USDC ≈ 1 USD</strong></p>
+                        </div>
+                        <h3>Waarom gebruiken mensen stablecoins?</h3>
+                        <ul>
+                            <li>Waarde behouden tijdens marktvolatiliteit</li>
+                            <li>Snel geld over grenzen versturen</li>
+                            <li>Handelen tussen crypto's zonder bank</li>
+                            <li>Liquiditeit in DeFi</li>
+                        </ul>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>USDT (Tether)</h4>
+                                <ul>
+                                    <li>Meest gebruikte stablecoin</li>
+                                    <li>Beschikbaar op bijna elke exchange</li>
+                                    <li>Hoogste handelsvolume</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4>USDC (USD Coin)</h4>
+                                <ul>
+                                    <li>Transparantie en compliance</li>
+                                    <li>Vaak geprefereerd door instituten</li>
+                                    <li>Regulatoire focus</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="altcoin-sol" class="altcoin-content">
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon sol-icon">SOL</div>
+                            <div>
+                                <h2 style="margin:0;">Solana (SOL)</h2>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Snelheid en lage kosten</p>
+                            </div>
+                        </div>
+                        <p>Solana is een blockchain ontworpen voor <strong>hoge snelheid</strong> en <strong>lage transactiekosten</strong>. Kan duizenden transacties per seconde verwerken.</p>
+                        <h3>Populaire toepassingen:</h3>
+                        <ul>
+                            <li>NFT marketplaces</li>
+                            <li>Blockchain gaming</li>
+                            <li>Betalingssystemen</li>
+                            <li>DeFi applicaties</li>
+                        </ul>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Voordelen</h4>
+                                <ul>
+                                    <li>Zeer snelle transacties</li>
+                                    <li>Lage fees</li>
+                                    <li>Groeiend ecosysteem</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4>Uitdagingen</h4>
+                                <ul>
+                                    <li>Historische netwerkuitval</li>
+                                    <li>Betrouwbaarheid verbetert</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="altcoin-xrp" class="altcoin-content">
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon xrp-icon">XRP</div>
+                            <div>
+                                <h2 style="margin:0;">XRP</h2>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Internationale betalingen</p>
+                            </div>
+                        </div>
+                        <p>XRP is ontwikkeld om <strong>internationale geldtransfers</strong> te verbeteren. In plaats van dagen te wachten, XRP regelt betalingen in <strong>seconden</strong>.</p>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Voordelen</h4>
+                                <ul>
+                                    <li>Snelle settlement</li>
+                                    <li>Lage transactiekosten</li>
+                                    <li>Focus op cross-border payments</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4>Opmerking</h4>
+                                <ul>
+                                    <li>Centraalere structuur</li>
+                                    <li>Regulatoire onzekerheid</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="altcoin-ada" class="altcoin-content">
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon ada-icon">ADA</div>
+                            <div>
+                                <h2 style="margin:0;">Cardano (ADA)</h2>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Wetenschappelijk onderbouwde ontwikkeling</p>
+                            </div>
+                        </div>
+                        <p>Cardano richt zich op <strong>veiligheid, onderzoek en duurzaamheid</strong>. Ontwikkeling gebaseerd op academisch onderzoek en peer-reviewed studies.</p>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Voordelen</h4>
+                                <ul>
+                                    <li>Sterke focus op veiligheid</li>
+                                    <li>Energie-efficiënt ontwerp</li>
+                                    <li>Langetermijn ontwikkelingsaanpak</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4>Uitdagingen</h4>
+                                <ul>
+                                    <li>Langzamere ontwikkeling</li>
+                                    <li>Minder dApps dan Ethereum</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="altcoin-bnb" class="altcoin-content">
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon bnb-icon">BNB</div>
+                            <div>
+                                <h2 style="margin:0;">BNB</h2>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Het hart van het BNB Chain ecosysteem</p>
+                            </div>
+                        </div>
+                        <p>BNB is de native cryptocurrency van het <strong>BNB Chain ecosysteem</strong>. Oorspronkelijk gecreëerd voor korting op Binance trading fees.</p>
+                        <h3>Gebruik:</h3>
+                        <ul>
+                            <li>Betaling van transactiekosten</li>
+                            <li>DeFi</li>
+                            <li>NFT marketplaces</li>
+                            <li>Blockchain games</li>
+                            <li>Smart contracts</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="altcoin-compare" class="altcoin-content">
+                    <div class="crypto-card">
+                        <h2>Vergelijking van Major Cryptocurrencies</h2>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Cryptocurrency</th>
+                                    <th>Primair Doel</th>
+                                    <th>Snelheid</th>
+                                    <th>Typische Fees</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Bitcoin (BTC)</strong></td>
+                                    <td>Digitaal geld & store of value</td>
+                                    <td>Matig</td>
+                                    <td>Matig</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ethereum (ETH)</strong></td>
+                                    <td>Smart contracts & dApps</td>
+                                    <td>Matig</td>
+                                    <td>Hoger bij congestie</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Solana (SOL)</strong></td>
+                                    <td>Snelle applicaties & betalingen</td>
+                                    <td>Zeer snel</td>
+                                    <td>Laag</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>XRP</strong></td>
+                                    <td>Cross-border betalingen</td>
+                                    <td>Zeer snel</td>
+                                    <td>Zeer laag</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cardano (ADA)</strong></td>
+                                    <td>Research-driven smart contracts</td>
+                                    <td>Snel</td>
+                                    <td>Laag</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>BNB</strong></td>
+                                    <td>BNB Chain ecosysteem</td>
+                                    <td>Snel</td>
+                                    <td>Laag</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="highlight">
+                            <h3>De Juiste Cryptocurrency Kiezen</h3>
+                            <p>Stel jezelf de volgende vragen:</p>
+                            <ul>
+                                <li>Wil ik langetermijn exposure naar een gevestigd digitaal asset?</li>
+                                <li>Ben ik geïnteresseerd in decentralized applications?</li>
+                                <li>Heb ik snelle en goedkope transacties nodig?</li>
+                                <li>Zoek ik een stabiel digitaal asset voor transfers?</li>
+                            </ul>
+                            <p style="margin-top:15px;"><strong>Er is geen "beste" cryptocurrency — elk heeft sterke punten afhankelijk van het gebruik.</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="altcoin-mistakes" class="altcoin-content">
+                    <div class="crypto-card">
+                        <h2>Veelgemaakte Beginnersfouten</h2>
+                        <div class="mistake-box">
+                            <h3>Vermijd deze valkuilen:</h3>
+                            <ul>
+                                <li>Alle cryptocurrencies als hetzelfde beschouwen</li>
+                                <li>Investeren zonder het doel te begrijpen</li>
+                                <li>Hype of social media trends achternajagen</li>
+                                <li>Marktrisico en volatiliteit negeren</li>
+                                <li>Geen diversificatie toepassen</li>
+                            </ul>
+                        </div>
+                        <div class="key-takeaway">
+                            <h3>Belangrijkste Inzichten</h3>
+                            <ul>
+                                <li><strong>Bitcoin</strong> = digitaal geld & store of value</li>
+                                <li><strong>Ethereum</strong> = smart contracts & duizenden dApps</li>
+                                <li><strong>Stablecoins</strong> = stabiele waarde voor betalingen & trading</li>
+                                <li><strong>Solana</strong> = snelheid & lage kosten</li>
+                                <li><strong>XRP</strong> = snelle internationale betalingen</li>
+                                <li><strong>Cardano</strong> = veiligheid & research-based</li>
+                                <li><strong>BNB</strong> = breed blockchain ecosysteem</li>
+                            </ul>
+                            <p style="margin-top:15px;"><strong>Het begrijpen van het doel van elke cryptocurrency helpt je projecten effectiever te evalueren.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TA SECTION - LOCKED -->
+        <section id="ta_edu" class="section">
+            <div class="section-locked-overlay active">
+                <div class="lock-big">🔒</div>
+                <h2>Technische Analyse is Vergrendeld</h2>
+                <p>Upgrade naar BASIC om toegang te krijgen tot de volledige Technische Analyse cursus met 13 interactieve lessen.</p>
+                <button class="btn-invest" style="max-width:300px; margin:0 auto;" onclick="openInvest('BASIC')">Upgrade naar BASIC</button>
+            </div>
+            <div id="taMenu" class="menu-container" style="display:none;">
+                <div class="lesson-card" onclick="openTA()">
+                    <span class="basic-badge">BASIC</span>
+                    <h3>Technische Analyse Cursus</h3>
+                    <p>13 lessen: van candlestick charts tot risicomanagement. Interactieve leeromgeving.</p>
+                </div>
+                <div class="lesson-card locked-card" onclick="openInvest('BASIC')">
+                    <span class="basic-badge">BASIC</span>
+                    <h3>Indicatoren Mastery</h3>
+                    <p>Diepgaande analyse van RSI, MACD, Bollinger Bands en Fibonacci. Upgrade vereist.</p>
+                </div>
+            </div>
+            <div id="taMode" class="play-container">
+                <div style="margin-bottom:20px;">
+                    <button class="back-to-menu" onclick="backToTAMenu()">← Terug naar Menu</button>
+                </div>
+                <div class="intro-highlight">
+                    <h2>Technische Analyse voor Cryptocurrency</h2>
+                    <p>De studie van historische prijsbewegingen en handelsvolume om trends, entry/exit punten en marktsentiment te identificeren.</p>
+                </div>
+                <div class="ta-nav">
+                    <div class="ta-tab active" onclick="showTA('intro')">Introductie</div>
+                    <div class="ta-tab" onclick="showTA('candlesticks')">Candlesticks</div>
+                    <div class="ta-tab" onclick="showTA('support')">Support & Resistance</div>
+                    <div class="ta-tab" onclick="showTA('trends')">Trends</div>
+                    <div class="ta-tab" onclick="showTA('volume')">Volume</div>
+                    <div class="ta-tab" onclick="showTA('ma')">Moving Averages</div>
+                    <div class="ta-tab" onclick="showTA('rsi')">RSI</div>
+                    <div class="ta-tab" onclick="showTA('macd')">MACD</div>
+                    <div class="ta-tab" onclick="showTA('bollinger')">Bollinger Bands</div>
+                    <div class="ta-tab" onclick="showTA('fibonacci')">Fibonacci</div>
+                    <div class="ta-tab" onclick="showTA('patterns')">Patronen</div>
+                    <div class="ta-tab" onclick="showTA('risk')">Risk Management</div>
+                    <div class="ta-tab" onclick="showTA('psychology')">Psychologie</div>
+                    <div class="ta-tab" onclick="showTA('resources')">Resources</div>
+                </div>
+                <div id="ta-intro" class="ta-content active">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Wat is Technische Analyse?</h2>
+                        <p>Technische Analyse (TA) is het bestuderen van <strong>historische prijsbewegingen</strong> en <strong>handelsvolume</strong> om traders te helpen trends, potentiële entry/exit punten en algemeen marktsentiment te identificeren.</p>
+                        <div class="warning-box">
+                            <h4>Belangrijke Opmerking</h4>
+                            <p>TA voorspelt de toekomst niet met zekerheid. Het biedt tools voor het evalueren van <strong>kansen</strong>.</p>
+                        </div>
+                        <h3>Kernprincipes van Technische Analyse:</h3>
+                        <div class="principle-box">
+                            <h4>1. De markt discount alles</h4>
+                            <p>Prijs weerspiegelt alle bekende informatie, nieuws en marktverwachtingen.</p>
+                        </div>
+                        <div class="principle-box">
+                            <h4>2. Prijzen bewegen in trends</h4>
+                            <p>Markten bewegen vaak in dezelfde richting totdat condities veranderen.</p>
+                        </div>
+                        <div class="principle-box">
+                            <h4>3. Geschiedenis herhaalt zich</h4>
+                            <p>Patronen gevormd door kopers en verkopers kunnen opnieuw verschijnen onder vergelijkbare condities.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-candlesticks" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Candlestick Charts</h2>
+                        <p>Candlestick charts zijn de meest gebruikte prijsgrafieken in cryptocurrency trading. Elke candlestick vertegenwoordigt de prijsbeweging gedurende een gekozen tijdsperiode.</p>
+                        <h3>Vier sleutelwaarden:</h3>
+                        <ul>
+                            <li><strong>Open</strong> — Prijs aan het begin van de periode</li>
+                            <li><strong>Close</strong> — Prijs aan het einde van de periode</li>
+                            <li><strong>High</strong> — Hoogste prijs bereikt</li>
+                            <li><strong>Low</strong> — Laagste prijs bereikt</li>
+                        </ul>
+                        <div class="candlestick-demo">
+                            <div class="candle">
+                                <div class="candle-wick" style="height:20px;"></div>
+                                <div class="candle-body bullish-body" style="height:60px;">Bullish</div>
+                                <div class="candle-wick" style="height:15px;"></div>
+                                <p style="font-size:12px; margin-top:10px;">Close > Open</p>
+                            </div>
+                            <div class="candle">
+                                <div class="candle-wick" style="height:15px;"></div>
+                                <div class="candle-body bearish-body" style="height:60px;">Bearish</div>
+                                <div class="candle-wick" style="height:20px;"></div>
+                                <p style="font-size:12px; margin-top:10px;">Close < Open</p>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <p><strong>Bullish Candle:</strong> Sluitingsprijs is hoger dan openingsprijs. Duidt op koopdruk.</p>
+                            <p><strong>Bearish Candle:</strong> Sluitingsprijs is lager dan openingsprijs. Duidt op verkoopdruk.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-support" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Support & Resistance</h2>
+                        <p>Dit zijn twee van de belangrijkste concepten in technische analyse.</p>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Support</h4>
+                                <p>Een prijsgebied waar koopinteresse eerder sterk genoeg was om een daling te stoppen of vertragen.</p>
+                                <p style="margin-top:10px;"><em>Voorbeeld: Bitcoin valt herhaaldelijk naar $100,000 en kopers stappen in.</em></p>
+                            </div>
+                            <div class="cons">
+                                <h4>Resistance</h4>
+                                <p>Een prijsgebied waar verkoopdruk eerder sterk genoeg was om een stijging te stoppen of vertragen.</p>
+                                <p style="margin-top:10px;"><em>Voorbeeld: Bitcoin worstelt herhaaldelijk om boven $110,000 te blijven.</em></p>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <h3>Belangrijk Inzicht</h3>
+                            <p>Wanneer support wordt doorbroken, kan het vaak resistance worden (en vice versa). Dit wordt een <strong>"role reversal"</strong> genoemd.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-trends" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Trend Analyse</h2>
+                        <p>Markten bewegen over het algemeen in een van drie richtingen:</p>
+                        <div class="principle-box">
+                            <h4>Uptrend (Stijgende Trend)</h4>
+                            <ul>
+                                <li>Hogere highs</li>
+                                <li>Hogere lows</li>
+                                <li>Duidt op controle door kopers</li>
+                            </ul>
+                        </div>
+                        <div class="principle-box">
+                            <h4>Downtrend (Dalende Trend)</h4>
+                            <ul>
+                                <li>Lagere highs</li>
+                                <li>Lagere lows</li>
+                                <li>Duidt op controle door verkopers</li>
+                            </ul>
+                        </div>
+                        <div class="principle-box">
+                            <h4>Sideways (Range)</h4>
+                            <p>Prijs beweegt tussen support en resistance zonder duidelijke stijgende of dalende trend.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-volume" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Trading Volume</h2>
+                        <p>Volume meet hoeveel van een asset is verhandeld gedurende een specifieke periode.</p>
+                        <h3>Waarom Volume Belangrijk Is:</h3>
+                        <div class="highlight">
+                            <p><strong>Hoger volume</strong> bij een prijsbeweging = sterkere marktdeelname en meer betrouwbaarheid.</p>
+                            <p><strong>Lager volume</strong> bij een prijsbeweging = zwakkere overtuiging, mogelijk minder betrouwbaar.</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Volume Confirmatie</h4>
+                            <p>Een prijsstijging met toenemend volume wordt gezien als sterker dan een stijging met afnemend volume.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-ma" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-intermediate">Intermediate</span>
+                        <h2>Moving Averages (MA)</h2>
+                        <p>Een Moving Average maakt prijsdata glad om de algemene trend te identificeren.</p>
+                        <h3>Veelgebruikte Types:</h3>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>SMA (Simple Moving Average)</h4>
+                                <p>Gemiddelde prijs over een vast aantal periodes. Eenvoudig en stabiel.</p>
+                            </div>
+                            <div class="cons">
+                                <h4>EMA (Exponential Moving Average)</h4>
+                                <p>Geeft meer gewicht aan recente prijzen. Reageert sneller op marktveranderingen.</p>
+                            </div>
+                        </div>
+                        <h3>Populaire Instellingen:</h3>
+                        <div class="indicator-visual">
+                            <p>20 EMA  — Korte termijn trend</p>
+                            <p>50 EMA  — Middellange termijn trend</p>
+                            <p>100 EMA — Langere termijn trend</p>
+                            <p>200 EMA — Lange termijn trend indicator</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Belangrijk</h4>
+                            <p>Veel traders bekijken de 200-period moving average als een lange-termijn trend indicator, maar gebruik deze altijd samen met andere tools.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-rsi" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-intermediate">Intermediate</span>
+                        <h2>Relative Strength Index (RSI)</h2>
+                        <p>RSI meet de snelheid en magnitude van recente prijsbewegingen. De indicator loopt van 0 tot 100.</p>
+                        <div class="indicator-visual">
+                            <p>RSI = 0-30  → Mogelijk OVERSOLD (onderkocht)</p>
+                            <p>RSI = 30-70 → Neutrale zone</p>
+                            <p>RSI = 70-100 → Mogelijk OVERBOUGHT (overkocht)</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Let Op!</h4>
+                            <p>Dit zijn <strong>geen automatische koop- of verkoopsignalen</strong>. In sterke trends kan RSI lang boven 70 of onder 30 blijven.</p>
+                        </div>
+                        <div class="highlight">
+                            <h3>Praktische Tip</h3>
+                            <p>Gebruik RSI in combinatie met support/resistance levels en trend analyse voor betere resultaten.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-macd" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-intermediate">Intermediate</span>
+                        <h2>MACD</h2>
+                        <p>MACD staat voor <strong>Moving Average Convergence Divergence</strong>. Het vergelijkt twee moving averages om veranderingen in momentum te identificeren.</p>
+                        <h3>MACD Bestaat Uit:</h3>
+                        <ul>
+                            <li><strong>MACD Line</strong> — Het verschil tussen twee EMA's</li>
+                            <li><strong>Signal Line</strong> — EMA van de MACD Line</li>
+                            <li><strong>Histogram</strong> — Visuele weergave van het verschil</li>
+                        </ul>
+                        <div class="highlight">
+                            <h3>Mogelijke Interpretaties:</h3>
+                            <p><strong>MACD kruist boven Signal Line</strong> → Mogelijk toenemend bullish momentum</p>
+                            <p><strong>MACD kruist onder Signal Line</strong> → Mogelijk toenemend bearish momentum</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Altijd Combineren</h4>
+                            <p>MACD werkt het beste in combinatie met andere analyse tools. Gebruik nooit één indicator op zichzelf.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-bollinger" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-intermediate">Intermediate</span>
+                        <h2>Bollinger Bands</h2>
+                        <p>Bollinger Bands bestaan uit drie lijnen die helpen bij het visualiseren van marktvolatiliteit:</p>
+                        <ul>
+                            <li><strong>Upper Band</strong> — Bovenste grens</li>
+                            <li><strong>Middle Moving Average</strong> — Middelste lijn (meestal 20 SMA)</li>
+                            <li><strong>Lower Band</strong> — Onderste grens</li>
+                        </ul>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Brede Bands</h4>
+                                <p>Hoge volatiliteit. Markt is actief. Mogelijk voorbereiding op grote beweging.</p>
+                            </div>
+                            <div class="cons">
+                                <h4>Smalle Bands</h4>
+                                <p>Lage volatiliteit. Kan soms voorafgaan aan grotere prijsbewegingen ("squeeze").</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-fibonacci" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-advanced">Advanced</span>
+                        <h2>Fibonacci Retracement</h2>
+                        <p>Fibonacci Retracement is een tool om gebieden te identificeren waar prijs mogelijk support of resistance vindt tijdens een pullback.</p>
+                        <h3>Veelgebruikte Retracement Levels:</h3>
+                        <div class="indicator-visual">
+                            <p>23.6%  — Zwak retracement</p>
+                            <p>38.2%  — Mild retracement</p>
+                            <p>50.0%  — Middelpunt (geen echte Fibonacci, maar populair)</p>
+                            <p>61.8%  — "Golden Ratio" — sterk level</p>
+                            <p>78.6%  — Diep retracement</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Richtlijnen, Geen Garanties</h4>
+                            <p>Deze levels zijn <strong>richtlijnen</strong> in plaats van garanties. Prijs reageert niet altijd precies op deze niveaus.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-patterns" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-intermediate">Intermediate</span>
+                        <h2>Chart Patterns</h2>
+                        <p>Herkenbare patronen die traders helpen potentiële trendveranderingen te identificeren:</p>
+                        <div class="principle-box">
+                            <h4>Double Top</h4>
+                            <p>Twee pieken op ongeveer hetzelfde niveau. Vaak gezien als teken van verzwakkend opwaarts momentum.</p>
+                        </div>
+                        <div class="principle-box">
+                            <h4>Double Bottom</h4>
+                            <p>Twee dalen op ongeveer hetzelfde niveau. Vaak gezien als teken van verzwakkend neerwaarts momentum.</p>
+                        </div>
+                        <div class="principle-box">
+                            <h4>Head and Shoulders</h4>
+                            <p>Drie pieken met de middelste als hoogste. Kan een mogelijke trend reversal signaleren.</p>
+                        </div>
+                        <div class="principle-box">
+                            <h4>Ascending Triangle</h4>
+                            <p>Continuatie patroon. Hogere lows met flat resistance. Kan toenemende koopdruk aangeven.</p>
+                        </div>
+                        <div class="principle-box">
+                            <h4>Descending Triangle</h4>
+                            <p>Continuatie patroon. Lagere highs met flat support. Kan toenemende verkoopdruk aangeven.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-risk" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Risk Management</h2>
+                        <p>Technische analyse is het meest effectief wanneer gecombineerd met gedisciplineerd risicomanagement.</p>
+                        <h3>Goede Praktijken:</h3>
+                        <div class="highlight">
+                            <ul>
+                                <li><strong>Risk per trade</strong> — Zet nooit meer dan een klein percentage van je kapitaal op één trade.</li>
+                                <li><strong>Stop-loss orders</strong> — Gebruik waar passend om verlies te beperken.</li>
+                                <li><strong>Diversificatie</strong> — Verdeel je fondsen over meerdere assets.</li>
+                                <li><strong>Emotioneel beslissen vermijden</strong> — Volg je plan, niet je emoties.</li>
+                                <li><strong>Verlies accepteren</strong> — Verlies hoort bij trading. Leer ervan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-psychology" class="ta-content">
+                    <div class="ta-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Trading Psychology</h2>
+                        <p>Markten worden niet alleen gedreven door data, maar ook door menselijke emoties.</p>
+                        <h3>Veelvoorkomende Psychologische Valkuilen:</h3>
+                        <div class="mistake-box">
+                            <ul>
+                                <li><strong>FOMO (Fear of Missing Out)</strong> — Trades enteren omdat anderen kopen.</li>
+                                <li><strong>Panic Selling</strong> — Verkopen tijdens scherpe dalingen zonder plan.</li>
+                                <li><strong>Overconfidence</strong> — Denken dat succesvolle trades toekomstig succes garanderen.</li>
+                                <li><strong>Revenge Trading</strong> — Impulsieve trades nemen na een verlies.</li>
+                            </ul>
+                        </div>
+                        <div class="key-takeaway">
+                            <h3>Succesvolle Traders</h3>
+                            <p>Volgen een <strong>trading plan</strong> in plaats van emotioneel te reageren. Discipline is belangrijker dan enkele indicator.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="ta-resources" class="ta-content">
+                    <div class="ta-card">
+                        <h2>Aanbevolen Gratis Leerresources</h2>
+                        <a href="https://academy.binance.com" target="_blank" class="resource-link">
+                            <div class="resource-icon">B</div>
+                            <div>
+                                <h4 style="margin:0;">Binance Academy</h4>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Technical Analysis, Indicators, Candlestick Patterns, Trading Psychology</p>
+                            </div>
+                        </a>
+                        <a href="https://www.tradingview.com/education/" target="_blank" class="resource-link">
+                            <div class="resource-icon">TV</div>
+                            <div>
+                                <h4 style="margin:0;">TradingView Education</h4>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Chart Reading, Technical Indicators, Trend Analysis, Strategy Development</p>
+                            </div>
+                        </a>
+                        <a href="https://www.investopedia.com/technical-analysis-4689657" target="_blank" class="resource-link">
+                            <div class="resource-icon">I</div>
+                            <div>
+                                <h4 style="margin:0;">Investopedia</h4>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Technical Analysis Basics, Chart Patterns, Risk Management</p>
+                            </div>
+                        </a>
+                        <a href="https://www.babypips.com/learn" target="_blank" class="resource-link">
+                            <div class="resource-icon">BP</div>
+                            <div>
+                                <h4 style="margin:0;">BabyPips School</h4>
+                                <p style="margin:5px 0 0 0; color:var(--text-gray);">Chart reading, indicators, psychology — oorspronkelijk forex, maar uitstekend voor crypto</p>
+                            </div>
+                        </a>
+                        <div class="key-takeaway" style="margin-top:30px;">
+                            <h3>Belangrijkste Inzicht</h3>
+                            <p>Technische analyse is een <strong>beslissingsondersteunend tool</strong>, geen voorspellingssysteem. Ervaring traders combineren meestal:</p>
+                            <ul>
+                                <li>Price action</li>
+                                <li>Support en resistance</li>
+                                <li>Trend analyse</li>
+                                <li>Volume</li>
+                                <li>Meerdere indicators</li>
+                                <li>Risicomanagement</li>
+                                <li>Fundamentele analyse</li>
+                            </ul>
+                            <p style="margin-top:15px;"><strong>Leren om deze tools samen te interpreteren — en te begrijpen dat geen indicator altijd accuraat is — is waardevoller dan vertrouwen op één signaal.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IM SECTION - LOCKED -->
+        <section id="im_edu" class="section">
+            <div class="section-locked-overlay active">
+                <div class="lock-big">🔒</div>
+                <h2>Indicatoren Mastery is Vergrendeld</h2>
+                <p>Upgrade naar BASIC om toegang te krijgen tot de complete Indicatoren Mastery cursus met 16 diepgaande lessen.</p>
+                <button class="btn-invest" style="max-width:300px; margin:0 auto;" onclick="openInvest('BASIC')">Upgrade naar BASIC</button>
+            </div>
+            <div id="imMenu" class="menu-container" style="display:none;">
+                <div class="lesson-card" onclick="openIM()">
+                    <span class="basic-badge">BASIC</span>
+                    <h3>Indicatoren Mastery Cursus</h3>
+                    <p>16 lessen: van RSI en MACD tot Ichimoku Cloud en VWAP. Bouw je eigen indicator toolkit.</p>
+                </div>
+            </div>
+            <div id="imMode" class="play-container">
+                <div style="margin-bottom:20px;">
+                    <button class="back-to-menu" onclick="backToIMMenu()">← Terug naar Menu</button>
+                </div>
+                <div class="intro-highlight">
+                    <h2>Indicator Mastery</h2>
+                    <p>Een Complete Beginner's Guide to Technical Indicators in Cryptocurrency. Technische indicatoren helpen traders prijsbewegingen analyseren, trends identificeren, momentum meten en potentiële support/resistance levels schatten.</p>
+                </div>
+                <div class="im-nav">
+                    <div class="im-tab active" onclick="showIM('intro')">Introductie</div>
+                    <div class="im-tab" onclick="showIM('rsi')">RSI</div>
+                    <div class="im-tab" onclick="showIM('macd')">MACD</div>
+                    <div class="im-tab" onclick="showIM('ma')">Moving Averages</div>
+                    <div class="im-tab" onclick="showIM('volume')">Volume</div>
+                    <div class="im-tab" onclick="showIM('bollinger')">Bollinger Bands</div>
+                    <div class="im-tab" onclick="showIM('stochastic')">Stochastic</div>
+                    <div class="im-tab" onclick="showIM('atr')">ATR</div>
+                    <div class="im-tab" onclick="showIM('fibonacci')">Fibonacci</div>
+                    <div class="im-tab" onclick="showIM('vwap')">VWAP</div>
+                    <div class="im-tab" onclick="showIM('ichimoku')">Ichimoku</div>
+                    <div class="im-tab" onclick="showIM('obv')">OBV</div>
+                    <div class="im-tab" onclick="showIM('adx')">ADX</div>
+                    <div class="im-tab" onclick="showIM('combine')">Combineren</div>
+                    <div class="im-tab" onclick="showIM('mistakes')">Fouten</div>
+                    <div class="im-tab" onclick="showIM('toolkit')">Toolkit</div>
+                </div>
+                <div id="im-intro" class="im-content active">
+                    <div class="im-card">
+                        <span class="level-indicator level-beginner">Beginner</span>
+                        <h2>Wat is een Technische Indicator?</h2>
+                        <p>Een technische indicator is een <strong>wiskundige berekening</strong> gebaseerd op historische marktdata, zoals prijs en volume.</p>
+                        <h3>Indicatoren helpen beantwoorden:</h3>
+                        <ul>
+                            <li>Is de markt in een trend?</li>
+                            <li>Neemt momentum toe of af?</li>
+                            <li>Is de markt overbought of oversold?</li>
+                            <li>Hoe volatiel is de markt?</li>
+                        </ul>
+                        <h3>Vier Categorieën van Indicatoren:</h3>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Trend Indicatoren</h4>
+                                <p>Toon de richting van de markt. Voorbeeld: Moving Averages</p>
+                            </div>
+                            <div class="cons">
+                                <h4>Momentum Indicatoren</h4>
+                                <p>Meten de sterkte van prijsbewegingen. Voorbeeld: RSI, MACD</p>
+                            </div>
+                        </div>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Volume Indicatoren</h4>
+                                <p>Analyseren koop- en verkoopactiviteit. Voorbeeld: OBV</p>
+                            </div>
+                            <div class="cons">
+                                <h4>Volatiliteit Indicatoren</h4>
+                                <p>Meten hoeveel prijzen fluctueren. Voorbeeld: Bollinger Bands, ATR</p>
+                            </div>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Belangrijke Waarschuwing</h4>
+                            <p>Geen enkele indicator garandeert toekomstige prijsbewegingen. Ze zijn het meest effectief wanneer gebruikt samen met price action, volume en solide risicomanagement.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-rsi" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-momentum">Momentum Indicator</span>
+                        <h2>Relative Strength Index (RSI)</h2>
+                        <p>RSI is een momentum indicator die de <strong>snelheid en magnitude</strong> van recente prijsveranderingen meet. Het loopt van 0 tot 100.</p>
+                        <h3>Veelgebruikte Referentieniveaus:</h3>
+                        <div class="scale-visual">
+                            <span>0</span>
+                            <span>30 Oversold</span>
+                            <span>70 Overbought</span>
+                            <span>100</span>
+                        </div>
+                        <div class="highlight">
+                            <p><strong>Boven 70</strong> → Markt kan overbought zijn</p>
+                            <p><strong>Onder 30</strong> → Markt kan oversold zijn</p>
+                        </div>
+                        <h3>Hoe Traders RSI Gebruiken:</h3>
+                        <ul>
+                            <li>Identificeren van sterk momentum</li>
+                            <li>RSI vergelijken met prijs om divergenties te spotten</li>
+                            <li>Bevestigen van de sterkte van een bestaande trend</li>
+                        </ul>
+                        <div class="mistake-box">
+                            <h3>Beginnersfout</h3>
+                            <p>Onmiddellijk verkopen omdat RSI boven 70 is. In een sterke uptrend kan RSI lang boven 70 blijven!</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-macd" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-momentum">Momentum Indicator</span>
+                        <h2>MACD (Moving Average Convergence Divergence)</h2>
+                        <p>MACD meet momentum door twee exponentiële moving averages te vergelijken.</p>
+                        <h3>MACD Bestaat Uit:</h3>
+                        <ul>
+                            <li><strong>MACD Line</strong> — Het verschil tussen twee EMA's</li>
+                            <li><strong>Signal Line</strong> — EMA van de MACD Line</li>
+                            <li><strong>Histogram</strong> — Toont of momentum sterker of zwakker wordt</li>
+                        </ul>
+                        <div class="highlight">
+                            <h3>Mogelijke Interpretaties:</h3>
+                            <p><strong>MACD kruist boven Signal Line</strong> → Mogelijk toenemend bullish momentum</p>
+                            <p><strong>MACD kruist onder Signal Line</strong> → Mogelijk toenemend bearish momentum</p>
+                        </div>
+                        <h3>Best Gebruikt Voor:</h3>
+                        <ul>
+                            <li>Trend bevestiging</li>
+                            <li>Momentum analyse</li>
+                            <li>Mogelijke trendveranderingen identificeren</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="im-ma" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-trend">Trend Indicator</span>
+                        <h2>Moving Averages (MA)</h2>
+                        <p>Moving averages maken prijsdata glad om trends te identificeren.</p>
+                        <h3>Simple Moving Average (SMA):</h3>
+                        <div class="formula-box">
+                            50 SMA = Gemiddelde sluitingsprijs over de laatste 50 periodes
+                        </div>
+                        <h3>Exponential Moving Average (EMA):</h3>
+                        <p>EMA geeft meer gewicht aan recente prijzen, waardoor het sneller reageert op huidige marktcondities.</p>
+                        <h3>Populaire EMA's:</h3>
+                        <div class="indicator-visual">
+                            <p>20 EMA  — Korte termijn</p>
+                            <p>50 EMA  — Middellange termijn</p>
+                            <p>100 EMA — Langere termijn</p>
+                            <p>200 EMA — Lange termijn</p>
+                        </div>
+                        <div class="highlight">
+                            <h3>Algemene Interpretatie:</h3>
+                            <p><strong>Prijs boven MA</strong> → Mogelijke uptrend</p>
+                            <p><strong>Prijs onder MA</strong> → Mogelijke downtrend</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Lagging Indicator</h4>
+                            <p>Moving averages zijn lagging indicators en zouden nooit alleen gebruikt moeten worden.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-volume" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-volume">Volume Indicator</span>
+                        <h2>Volume</h2>
+                        <p>Volume meet hoeveel van een asset is verhandeld.</p>
+                        <h3>Voorbeelden:</h3>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Prijs stijgt + Volume stijgt</h4>
+                                <p>Sterkere koopinteresse. De beweging is betrouwbaarder.</p>
+                            </div>
+                            <div class="cons">
+                                <h4>Prijs stijgt + Volume daalt</h4>
+                                <p>Minder participatie. De beweging kan minder duurzaam zijn.</p>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <p><strong>Hoog volume</strong> = Grotere marktparticipatie</p>
+                            <p><strong>Laag volume</strong> = Minder overtuiging</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-bollinger" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-volatility">Volatiliteit Indicator</span>
+                        <h2>Bollinger Bands</h2>
+                        <p>Bollinger Bands bestaan uit drie lijnen die marktvolatiliteit meten:</p>
+                        <ul>
+                            <li><strong>Upper Band</strong></li>
+                            <li><strong>Middle Band</strong> (Moving Average)</li>
+                            <li><strong>Lower Band</strong></li>
+                        </ul>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Brede Bands</h4>
+                                <p>Hoge volatiliteit</p>
+                            </div>
+                            <div class="cons">
+                                <h4>Smalle Bands</h4>
+                                <p>Lage volatiliteit, soms voorafgaand aan grotere prijsbewegingen</p>
+                            </div>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Geen Automatisch Signaal</h4>
+                            <p>Prijs die de upper of lower band raakt is <strong>geen automatisch koop- of verkoopsignaal</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-stochastic" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-momentum">Momentum Indicator</span>
+                        <h2>Stochastic Oscillator</h2>
+                        <p>De Stochastic Oscillator vergelijkt de sluitingsprijs met het recente handelsbereik.</p>
+                        <h3>Schaal: 0-100</h3>
+                        <div class="scale-visual">
+                            <span>0</span>
+                            <span>20 Low</span>
+                            <span>80 High</span>
+                            <span>100</span>
+                        </div>
+                        <div class="highlight">
+                            <p><strong>Boven 80</strong> → Hoge relatieve positie binnen recent bereik</p>
+                            <p><strong>Onder 20</strong> → Lage relatieve positie binnen recent bereik</p>
+                        </div>
+                        <p>Wordt vaak gebruikt om momentum te beoordelen.</p>
+                    </div>
+                </div>
+                <div id="im-atr" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-volatility">Volatiliteit Indicator</span>
+                        <h2>Average True Range (ATR)</h2>
+                        <p>ATR meet <strong>volatiliteit</strong>. Het geeft <strong>geen richting</strong> aan.</p>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Hoge ATR</h4>
+                                <p>Grote prijsschommelingen</p>
+                            </div>
+                            <div class="cons">
+                                <h4>Lage ATR</h4>
+                                <p>Kleinere prijsschommelingen</p>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <h3>Praktisch Gebruik</h3>
+                            <p>Veel traders gebruiken ATR om stop-loss afstanden te bepalen gebaseerd op marktvolatiliteit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-fibonacci" class="im-content">
+                    <div class="im-card">
+                        <span class="level-indicator level-advanced">Advanced</span>
+                        <h2>Fibonacci Retracement</h2>
+                        <p>Fibonacci levels helpen gebieden identificeren waar prijs mogelijk pauzeert of keert tijdens een pullback.</p>
+                        <h3>Veelgebruikte Levels:</h3>
+                        <div class="indicator-visual">
+                            <p>23.6% — Licht retracement</p>
+                            <p>38.2% — Mild retracement</p>
+                            <p>50.0% — Middelpunt</p>
+                            <p>61.8% — "Golden Ratio"</p>
+                            <p>78.6% — Diep retracement</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Potentiële Zones</h4>
+                            <p>Deze levels zijn <strong>potentiële support of resistance zones</strong>, geen gegarandeerde keerpunten.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-vwap" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-volume">Volume Indicator</span>
+                        <h2>VWAP (Volume Weighted Average Price)</h2>
+                        <p>VWAP combineert prijs en volume om de gemiddelde prijs te berekenen die gedurende de dag is verhandeld.</p>
+                        <h3>Algemene Interpretaties:</h3>
+                        <div class="highlight">
+                            <p><strong>Prijs boven VWAP</strong> → Kopers betalen boven het daggemiddelde</p>
+                            <p><strong>Prijs onder VWAP</strong> → Verkopers accepteren lagere prijzen dan het daggemiddelde</p>
+                        </div>
+                        <div class="warning-box">
+                            <h4>Reset Dagelijks</h4>
+                            <p>VWAP reset elke trading dag. Vooral nuttig voor intraday trading.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-ichimoku" class="im-content">
+                    <div class="im-card">
+                        <span class="level-indicator level-advanced">Advanced</span>
+                        <h2>Ichimoku Cloud</h2>
+                        <p>De Ichimoku Cloud combineert meerdere indicatoren in één systeem.</p>
+                        <h3>Helpt Beoordelen:</h3>
+                        <ul>
+                            <li>Trend richting</li>
+                            <li>Momentum</li>
+                            <li>Potentiële support en resistance</li>
+                        </ul>
+                        <div class="warning-box">
+                            <h4>Complex voor Beginners</h4>
+                            <p>Hoewel krachtig, kan Ichimoku complex overkomen voor beginners. Focus eerst op eenvoudigere indicatoren.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-obv" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-volume">Volume Indicator</span>
+                        <h2>On-Balance Volume (OBV)</h2>
+                        <p>OBV combineert prijsbeweging met handelsvolume.</p>
+                        <h3>Doel:</h3>
+                        <p>Bepalen of volume over het algemeen de prijstrend ondersteunt.</p>
+                        <div class="highlight">
+                            <h3>Interpretatie:</h3>
+                            <p><strong>Prijs stijgt + OBV stijgt</strong> → Koopdruk neemt mogelijk toe</p>
+                            <p><strong>Prijs stijgt + OBV daalt</strong> → Divergentie, mogelijk zwakke trend</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-adx" class="im-content">
+                    <div class="im-card">
+                        <span class="category-badge cat-trend">Trend Indicator</span>
+                        <h2>ADX (Average Directional Index)</h2>
+                        <p>ADX meet <strong>trend sterkte</strong>, niet richting.</p>
+                        <h3>Schaal: 0-100</h3>
+                        <div class="indicator-visual">
+                            <p>0-20  → Zwakke of range markt</p>
+                            <p>20-25 → Trend begint te vormen</p>
+                            <p>25-50 → Sterke trend</p>
+                            <p>50-100 → Zeer sterke trend</p>
+                        </div>
+                        <div class="highlight">
+                            <p>ADX wordt vaak gecombineerd met andere indicatoren die trendrichting identificeren.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-combine" class="im-content">
+                    <div class="im-card">
+                        <span class="level-indicator level-intermediate">Intermediate</span>
+                        <h2>Indicatoren Combineren</h2>
+                        <p>Het gebruik van meerdere indicatoren kan een meer gebalanceerd marktbeeld geven.</p>
+                        <h3>Voorbeeld Combinatie:</h3>
+                        <table class="indicator-table">
+                            <thead>
+                                <tr>
+                                    <th>Indicator</th>
+                                    <th>Doel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>200 EMA</strong></td>
+                                    <td>Lange-termijn trend</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RSI</strong></td>
+                                    <td>Momentum</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MACD</strong></td>
+                                    <td>Momentum verschuivingen</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Volume</strong></td>
+                                    <td>Bevestigt marktparticipatie</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ATR</strong></td>
+                                    <td>Volatiliteit</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="warning-box">
+                            <h4>Vermijd Redundantie</h4>
+                            <p>Gebruik niet meerdere indicatoren die hetzelfde meten — ze geven redundante informatie.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-mistakes" class="im-content">
+                    <div class="im-card">
+                        <h2>Veelgemaakte Beginnersfouten</h2>
+                        <div class="mistake-box">
+                            <ul>
+                                <li>Slechts één indicator gebruiken</li>
+                                <li>De bredere markttrend negeren</li>
+                                <li>Trades enteren zonder volume te overwegen</li>
+                                <li>Geloven dat indicatoren de toekomst voorspellen</li>
+                                <li>Elke crossover als trading signaal beschouwen</li>
+                                <li>Risicomanagement negeren</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="im-toolkit" class="im-content">
+                    <div class="im-card">
+                        <h2>Bouw Je Indicator Toolkit</h2>
+                        <div class="setup-comparison">
+                            <div class="setup-box setup-beginner">
+                                <h4>Beginner Setup</h4>
+                                <ul style="text-align:left; padding-left:20px;">
+                                    <li>50 EMA</li>
+                                    <li>200 EMA</li>
+                                    <li>RSI (14)</li>
+                                    <li>Volume</li>
+                                </ul>
+                            </div>
+                            <div class="setup-box setup-intermediate">
+                                <h4>Intermediate Setup</h4>
+                                <ul style="text-align:left; padding-left:20px;">
+                                    <li>20 EMA</li>
+                                    <li>50 EMA</li>
+                                    <li>MACD</li>
+                                    <li>RSI</li>
+                                    <li>Volume</li>
+                                    <li>ATR</li>
+                                </ul>
+                            </div>
+                            <div class="setup-box setup-advanced">
+                                <h4>Advanced Setup</h4>
+                                <ul style="text-align:left; padding-left:20px;">
+                                    <li>20 EMA</li>
+                                    <li>50 EMA</li>
+                                    <li>200 EMA</li>
+                                    <li>MACD</li>
+                                    <li>RSI</li>
+                                    <li>Bollinger Bands</li>
+                                    <li>ATR</li>
+                                    <li>VWAP</li>
+                                    <li>Fibonacci</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="golden-rule">
+                            <h4>Gouden Regels van Indicator Mastery</h4>
+                            <ul>
+                                <li>Indicatoren helpen kansen schatten, geen zekerheden geven</li>
+                                <li>Overweeg altijd de bredere markttrend</li>
+                                <li>Zoek overeenstemming tussen price action, volume en indicatoren</li>
+                                <li>Oefen op historische grafieken voordat je met echt geld handelt</li>
+                                <li>Focus op consistentie en risicomanagement in plaats van elke beweging te voorspellen</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRO SECTION - LOCKED -->
+        <section id="pro_edu" class="section">
+            <div class="section-locked-overlay active">
+                <div class="lock-big">🔒</div>
+                <h2>PRO Programma is Vergrendeld</h2>
+                <p>Upgrade naar PRO om toegang te krijgen tot Handelspraktijk en geavanceerde handelsstrategieën.</p>
+                <button class="btn-invest" style="max-width:300px; margin:0 auto; background:var(--pro-color);" onclick="openInvest('PRO')">Upgrade naar PRO</button>
             </div>
         </section>
     </main>
 
     <script>
-        // ─── educational content ───
-        const contentData = {
-            btc: `
-            <h2>Bitcoin (BTC)</h2>
-            <p>Bitcoin is the world's first decentralized digital currency, created in 2009 by a person or group under the pseudonym Satoshi Nakamoto.</p>
-            <p>Unlike regular money, bitcoin is not issued by banks or governments. It works on blockchain technology — a distributed database in which all transactions are recorded.</p>
+        // ─── FLASHCARDS DATA ───
+        const flashcards = [{
+            question: { title: "Wat is Cryptocurrency?", text: "Een digitale vorm van geld die alleen elektronisch bestaat." },
+            answer: { title: "Uitleg", text: "Cryptocurrency is gedecentraliseerd, grensoverschrijdend, veilig en transparant. Voorbeelden: Bitcoin, Ethereum, Solana, XRP, Cardano." }
+        }, {
+            question: { title: "Wat is Blockchain?", text: "Een digitaal grootboek dat elke transactie vastlegt." },
+            answer: { title: "Uitleg", text: "Een gedeeld notebook op miljoenen computers. Iedereen update tegelijkertijd. Extreem moeilijk om te wijzigen of verwijderen." }
+        }, {
+            question: { title: "Wat is Decentralisatie?", text: "Geen centrale autoriteit controleert de transacties." },
+            answer: { title: "Uitleg", text: "Traditioneel: Klant → Bank → Klant. Crypto: Klant → Blockchain → Klant. Iedereen met internet kan meedoen." }
+        }, {
+            question: { title: "Bitcoin (BTC)", text: "De eerste cryptocurrency, gecreëerd in 2009." },
+            answer: { title: "Feiten", text: "Maximale voorraad: 21 miljoen BTC. Vaak 'Digitaal Goud' genoemd. Grootste marktkapitalisatie. Waarde komt uit schaarste, veiligheid en adoptie." }
+        }, {
+            question: { title: "Ethereum (ETH)", text: "Meer dan alleen een cryptocurrency." },
+            answer: { title: "Uitleg", text: "Een blockchain platform voor smart contracts en dApps. Powert DeFi, NFTs, blockchain games en gedecentraliseerde applicaties." }
+        }, {
+            question: { title: "Wat is een Smart Contract?", text: "Een programma dat automatisch voorwaarden uitvoert." },
+            answer: { title: "Voorbeeld", text: "'Als betaling ontvangen → eigendom overdragen.' Geen advocaat of bank nodig. Alles gebeurt automatisch op de blockchain." }
+        }, {
+            question: { title: "Hot Wallet", text: "Verbonden met het internet." },
+            answer: { title: "Voorbeelden & Trade-offs", text: "MetaMask, Trust Wallet. Makkelijk toegang, handig. Maar kwetsbaarder voor online aanvallen." }
+        }, {
+            question: { title: "Cold Wallet", text: "Offline opslag." },
+            answer: { title: "Voorbeelden & Trade-offs", text: "Ledger, Trezor. Hoogste veiligheid. Minder handig voor frequente transacties." }
+        }, {
+            question: { title: "Public Key vs Private Key", text: "Wat is het verschil?" },
+            answer: { title: "Analogie", text: "Public Key = je e-mailadres (iedereen kan sturen). Private Key = je wachtwoord (geeft volledige controle). DEEL JE PRIVATE KEY NOOIT!" }
+        }, {
+            question: { title: "Wat is Mining?", text: "Beveiligen van het netwerk via complexe berekeningen." },
+            answer: { title: "Wat doen miners?", text: "Transacties verifiëren, wiskundige problemen oplossen, nieuwe blokken toevoegen, Bitcoin-beloningen ontvangen." }
+        }, {
+            question: { title: "Wat is Staking?", text: "Coins 'vastzetten' om het netwerk te beveiligen." },
+            answer: { title: "Populaire staking coins", text: "Ethereum, Solana, Cardano. Geen mining nodig. Je verdient beloningen door je coins te 'staken'." }
+        }, {
+            question: { title: "Marktkapitalisatie", text: "Hoe bereken je de totale waarde?" },
+            answer: { title: "Formule", text: "Marktkapitalisatie = Huidige Prijs × Circulerende Voorraad. Voorbeeld: $110,000 × 19.9M = ~$2.2 biljoen." }
+        }, {
+            question: { title: "Maximum Voorraad", text: "Het maximum aantal coins dat ooit kan bestaan." },
+            answer: { title: "Voorbeelden", text: "Bitcoin: 21,000,000 BTC. Circulerende voorraad = nu beschikbaar. Totale voorraad = alle bestaande coins." }
+        }, {
+            question: { title: "Volatiliteit", text: "Grote prijsschommelingen." },
+            answer: { title: "Voorbeeld", text: "Maandag: $100,000 → Dinsdag: $95,000 → Woensdag: $103,000. Grote prijsschommelingen zijn normaal in crypto." }
+        }, {
+            question: { title: "Bull Market", text: "Periode van stijgende prijzen." },
+            answer: { title: "Kenmerken", text: "Investeerdersoptimisme, toenemende vraag, hogere handelsvolumes. 'De markt is bullish!'" }
+        }, {
+            question: { title: "Bear Market", text: "Periode van dalende prijzen." },
+            answer: { title: "Kenmerken", text: "Lagere prijzen, verminderd vertrouwen, langere houdperioden. 'De markt is bearish!'" }
+        }, {
+            question: { title: "Stablecoins", text: "Cryptocurrencies met stabiele waarde." },
+            answer: { title: "Voorbeelden", text: "USDT (Tether), USDC. Doel: 1 stablecoin = 1 US dollar. Ideaal voor handel en bescherming tegen volatiliteit." }
+        }, {
+            question: { title: "Exchanges", text: "Marktplaatsen om crypto te kopen en verkopen." },
+            answer: { title: "Voorbeelden & Functies", text: "Coinbase, Kraken, Binance. Kopen/verkopen, converteren, grafieken bekijken, marktdata analyseren." }
+        }, {
+            question: { title: "Technische Analyse", text: "Historische prijsbewegingen bestuderen." },
+            answer: { title: "Tools", text: "Candlestick charts, trendlijnen, support/resistance, RSI, MACD, Moving Averages." }
+        }, {
+            question: { title: "Fundamentele Analyse", text: "Langetermijnpotentieel evalueren." },
+            answer: { title: "Factoren", text: "Projectdoel, ontwikkelteam, technologie, adoptie, partnerschappen, tokenvoorraad." }
+        }];
 
-            <h3>How does bitcoin work?</h3>
-            <div class="highlight">
-            Imagine a huge electronic ledger that is stored simultaneously on millions of computers around the world. Every time someone sends or receives bitcoins, the information is recorded in this book. It is virtually impossible to change or delete entries.
-        </div>
+        // ─── QUIZ DATA ───
+        const quizData = [
+            { question: "Wat is de maximale voorraad van Bitcoin?", options: ["100 miljoen", "21 miljoen", "1 miljard", "Onbeperkt"], correct: 1 },
+            { question: "Wat is het belangrijkste verschil tussen een Hot Wallet en Cold Wallet?", options: ["Prijs", "Internetverbinding", "Kleur", "Merk"], correct: 1 },
+            { question: "Wie creëerde Bitcoin?", options: ["Vitalik Buterin", "Elon Musk", "Satoshi Nakamoto", "Mark Zuckerberg"], correct: 2 },
+            { question: "Wat is een Smart Contract?", options: ["Een juridisch document", "Een programma dat automatisch uitvoert", "Een bankovereenkomst", "Een handelsbot"], correct: 1 },
+            { question: "Welke coin wordt vaak 'Digitaal Goud' genoemd?", options: ["Ethereum", "Solana", "Bitcoin", "XRP"], correct: 2 },
+            { question: "Wat is de formule voor Marktkapitalisatie?", options: ["Prijs + Voorraad", "Prijs × Voorraad", "Prijs ÷ Voorraad", "Prijs - Voorraad"], correct: 1 },
+            { question: "Wat is het doel van een Stablecoin?", options: ["Stijgen in waarde", "Stabiele waarde behouden", "Mining mogelijk maken", "Anoniem blijven"], correct: 1 },
+            { question: "Welke wallet staat bekend als de VEILIGSTE?", options: ["MetaMask", "Trust Wallet", "Ledger (Cold Wallet)", "Exchange wallet"], correct: 2 },
+            { question: "In een Bull Market zijn prijzen...", options: ["Dalend", "Stijgend", "Stabiel", "Onvoorspelbaar"], correct: 1 },
+            { question: "Waarom wordt Ethereum anders dan Bitcoin beschouwd?", options: ["Het is duurder", "Het ondersteunt Smart Contracts", "Het is sneller", "Het is anoniemer"], correct: 1 }
+        ];
 
-        <h3>Main features of Bitcoin:</h3>
-        <ul>
-            <li><strong>Decentralization</strong> — there is no central bank or company that controls the network.</li>
-            <li><strong>Limited emission</strong> — a total of 21 million BTC will be issued, which makes bitcoin a scarce asset.</li>
-            <li><strong>Transparency</strong> — all transactions can be checked in the blockchain.</li>
-            <li><strong>Security</strong> — the network is protected by thousands of computers (nodes) around the world.</li>
-            <li><strong>Globality</strong> — you can send bitcoins to any country in a matter of minutes.</li>
-        </ul>
+        let currentCard = 0;
+        let currentQuiz = 0;
+        let quizScore = 0;
 
-        <h3>What is bitcoin used for?</h3>
-        <ul>
-            <li>💰 <strong>Investments</strong> — many view BTC as a long-term asset, similar to digital gold.</li>
-            <li>🌍 <strong>International transfers</strong> — sending funds without intermediaries.</li>
-            <li>🛍️ <strong>Payment for goods and services</strong> — more and more companies are accepting Bitcoin.</li>
-            <li>📈 <strong>Trading</strong> — buying and selling on cryptocurrency exchanges.</li>
-        </ul>
-
-        <h3>Why is bitcoin called "digital gold"?</h3>
-        <p>Bitcoin is often compared to gold because its quantity is limited; it does not depend on the decisions of central banks; it cannot be "printed" in unlimited quantities; many investors use it as a means of preserving value.</p>
-
-        <h3>What affects the price of bitcoin?</h3>
-        <p>The price is determined by supply and demand, influenced by regulation news, interest from large investors, the global economic situation, and market sentiment.</p>
-
-        <div class="highlight" style="background:#FFFBEB; border-color:#F59E0B;">
-            <strong>Interesting fact:</strong> The first real purchase for bitcoins is considered to be the order of two pizzas on May 22, 2010. 10,000 BTC was paid for them. Today this date is known as Bitcoin Pizza Day.
-        </div>
-
-        <p><strong>In simple words:</strong> bitcoin is digital money that works without banks and government agencies. Thanks to blockchain technology, it allows people around the world to safely store, transfer and use value directly, without intermediaries.</p>
-        `,
-
-        blockchain: `
-        <h2>How does blockchain work?</h2>
-        <p>Blockchain is a digital database in which information is stored in the form of a sequence of blocks linked together. Each new block contains information about the previous one, making it virtually impossible to change or delete data.</p>
-
-        <h3>Imagine a ledger</h3>
-        <div class="highlight">
-        Imagine a large record book where all money transfers are recorded. But instead of being stored in one bank, a copy of this book is located simultaneously on thousands of computers around the world. When a new transaction occurs, all computers check it and add it to the book at the same time. This is exactly how blockchain works.
-    </div>
-
-    <h3>Step 1. The user sends cryptocurrency</h3>
-    <p>Anna sends 0.5 BTC to Ivan. A transfer request is created.</p>
-
-    <h3>Step 2. The transaction is transmitted to the network</h3>
-    <p>Information about the transfer is sent to thousands of computers (nodes) participating in the network.</p>
-
-    <h3>Step 3. Transaction verification</h3>
-    <p>Computers check: if the sender has enough funds; if the digital signature is correct; if these funds have already been spent before. If everything is correct, the transaction is considered valid.</p>
-
-    <h3>Step 4. Creating a new block</h3>
-    <p>Several confirmed transactions are combined into one block. The block contains: a list of transactions; creation time; a unique number (hash); the hash of the previous block. Thanks to this, each block is connected to the previous one.</p>
-
-    <h3>Step 5. Adding a block to the chain</h3>
-    <p>After verification, the new block is added to the end of the chain of blocks (Blockchain). All network participants receive an updated copy of the blockchain.</p>
-
-    <h3>Why is blockchain secure?</h3>
-    <p>Each block contains the hash of the previous block. A hash is a unique digital "fingerprint" of data. If someone tries to change even one digit in an old block, its hash will change, the hash of the next block will stop matching, and the chain will become invalid.</p>
-
-    <h3>What is a hash?</h3>
-    <p>Example:<br>Text: <strong>Bitcoin</strong> → Hash: <span class="hash-box">6b86b273ff34fce19d6b804eff5a3f57...</span><br>Text: <strong>bitcoin</strong> → Hash: <span class="hash-box">3ac674216f3e15c761ee1a5e255f0679...</span></p>
-
-    <div class="highlight">
-        <strong>Simple analogy:</strong> Imagine a chain of transparent boxes 📦. Each box stores information about several transactions. Each new box is attached to the previous one with a strong lock. If someone tries to open the box in the middle and change its contents, all subsequent locks will stop fitting.
-    </div>
-    `,
-
-    smart: `
-    <h2>Smart Contract</h2>
-    <p>A smart contract is a program that automatically fulfills the terms of an agreement recorded in the blockchain. It works without the participation of banks, notaries or other intermediaries.</p>
-
-    <div class="highlight">
-        Smart contract is a digital contract that fulfills its conditions itself when they are met.
-    </div>
-
-    <h3>Simple example</h3>
-    <p>Imagine you want to buy a concert ticket. Instead of transferring money and hoping the ticket arrives, you use a smart contract: You send payment → The smart contract automatically checks that the money has been received → After confirmation, the ticket is automatically sent to you. If the condition is not met (e.g., event canceled), the money is automatically returned.</p>
-
-    <h3>How do smart contracts work?</h3>
-    <p>They are built on the principle: <strong>"If event A happened, then automatically perform action B."</strong></p>
-    <ul>
-        <li>If the buyer transferred 1 ETH → transfer the NFT to him.</li>
-        <li>If the payment date has arrived → send interest to the investor.</li>
-    </ul>
-
-    <h3>Where are they used?</h3>
-    <ul>
-        <li>💰 <strong>DeFi</strong> — issuing loans, exchanging currencies.</li>
-        <li>🎨 <strong>NFT</strong> — automatic transfer of digital art.</li>
-        <li>📄 <strong>Insurance</strong> — automatic payouts for insurance events.</li>
-    </ul>
-
-    <div class="highlight">
-        <strong>In simple words:</strong> Imagine a vending machine. You insert money → select a drink → the machine immediately dispenses it. No one makes a decision manually — everything happens automatically according to pre-set rules.
-    </div>
-    `
-    };
-
-    // ─── helpers ───
-    function openEdu(key) {
-        document.getElementById('modalContainer').style.maxWidth = "850px";
-        document.getElementById('modalBody').innerHTML = contentData[key];
-        document.getElementById('mainModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function openInvest(level) {
-        document.getElementById('modalContainer').style.maxWidth = "600px";
-        const price = level === 'BASIC' ? '4950 EUR' : '9950 EUR';
-        const url = level === 'BASIC' ?
-            'https://formspree.io/f/maqgaqea' :
-            'https://formspree.io/f/xpqgkqdw';
-
-        document.getElementById('modalBody').innerHTML = `
-            <div style="text-align:center">
-                <img src="https://imgur.com/a/grH244M" alt="BloomQuix" class="modal-logo" />
-                <div class="academy-text" style="margin-bottom:20px;">BloomQuix Academy</div>
-                <p style="font-size:18px; margin:20px 0; font-weight:500; color:var(--text-dark);">
-                    To unlock more access and opportunities, your investment is needed.
-                </p>
-                <button class="btn-invest" onclick="submitInvest('${url}')">
-                    UPGRADE WITH ${price}
-                </button>
-            </div>
-        `;
-        document.getElementById('mainModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function submitInvest(url) {
-        fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({ request: 'Upgrade Request' }),
-                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-            })
-            .then(() => {
-                document.getElementById('modalBody').innerHTML = `
-                    <div style="text-align:center">
-                        <img src="https://imgur.com/a/grH244M" alt="BloomQuix" class="modal-logo" />
-                        <div class="academy-text" style="margin-bottom:20px;">BloomQuix Academy</div>
-                        <h2 style="color:var(--basic-color); margin-top:10px;">Request Received</h2>
-                        <p style="font-size:18px; color:var(--text-gray);">
-                            Your financial advisor will reach you shortly.
-                        </p>
-                    </div>
-                `;
-            })
-            .catch(() => {
-                // fallback – still show success UI even if fetch fails
-                document.getElementById('modalBody').innerHTML = `
-                    <div style="text-align:center">
-                        <img src="https://imgur.com/a/grH244M" alt="BloomQuix" class="modal-logo" />
-                        <div class="academy-text" style="margin-bottom:20px;">BloomQuix Academy</div>
-                        <h2 style="color:var(--basic-color); margin-top:10px;">Request Received</h2>
-                        <p style="font-size:18px; color:var(--text-gray);">
-                            Your financial advisor will reach you shortly.
-                        </p>
-                    </div>
-                `;
-            });
-    }
-
-    function closeModal(e) {
-        if (e && e.target !== e.currentTarget) return;
-        document.getElementById('mainModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    function showTab(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-
-        // update nav highlight
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-        const navBtns = document.querySelectorAll('.nav-item');
-        // find the button that matches this section
-        // we map free_edu → first nav item, etc.
-        const map = { 'free_edu': 0 };
-        if (navBtns[map[id]] !== undefined) {
-            navBtns[map[id]].classList.add('active');
-        } else {
-            // fallback: highlight first nav item
-            navBtns[0]?.classList.add('active');
+        // ─── PLAY MODE ───
+        function startPlayMode() {
+            document.getElementById('basicMenu').style.display = 'none';
+            document.getElementById('playMode').classList.add('active');
+            currentCard = 0;
+            updateCard();
         }
-    }
 
-    // ─── close modal on Escape key ───
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-    });
+        function updateCard() {
+            const card = flashcards[currentCard];
+            document.getElementById('cardNumber').textContent = `${currentCard + 1} / ${flashcards.length}`;
+            document.getElementById('cardQuestion').innerHTML = `<h2>${card.question.title}</h2><p>${card.question.text}</p>`;
+            document.getElementById('cardAnswer').innerHTML = `<h2>${card.answer.title}</h2><p>${card.answer.text}</p>`;
+            document.getElementById('flashcard').classList.remove('flipped');
+            document.getElementById('prevBtn').disabled = currentCard === 0;
+            document.getElementById('nextBtn').textContent = currentCard === flashcards.length - 1 ? "✓ Voltooid" : "Volgende →";
+            document.getElementById('progressFill').style.width = `${((currentCard + 1) / flashcards.length) * 100}%`;
+        }
 
-    // ─── fix logo error: fallback to text if image fails ───
-    document.querySelectorAll('.sidebar-logo, .modal-logo').forEach(img => {
-        img.addEventListener('error', function() {
-            // if the imgur image doesn't load, show the brand name as fallback
-            const fallback = document.createElement('span');
-            fallback.textContent = 'BloomQuix';
-            fallback.style.fontSize = '1.8rem';
-            fallback.style.fontWeight = '800';
-            fallback.style.color = 'var(--text-dark)';
-            fallback.style.letterSpacing = '-0.5px';
-            this.parentNode.replaceChild(fallback, this);
-        });
-    });
-</script>
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
 
-</body>
-</html>
+        function nextCard() {
+            if (currentCard < flashcards.length - 1) {
+                currentCard++;
+                updateCard();
+            } else {
+                backToMenu();
+                alert('Gefeliciteerd! Je hebt alle 20 flashcards voltooid. Probeer nu de Quiz!');
+            }
+        }
+
+        function prevCard() {
+            if (currentCard > 0) {
+                currentCard--;
+                updateCard();
+           
